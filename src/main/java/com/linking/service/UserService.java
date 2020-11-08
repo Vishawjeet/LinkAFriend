@@ -1,4 +1,4 @@
-package com.example.linking.service;
+package com.linking.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,16 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.linking.db.dao.UserRepository;
-import com.example.linking.db.entity.User;
+import com.linking.db.dao.UserRepository;
+import com.linking.db.entity.User;
 
 @Service
-public class UserService {
+public class UserService implements BService<User, String> {
 	
 	@Autowired
 	UserRepository userRepository;
 	
+	@Override
 	public List<User> getAll() {
 		Iterable<User> result = userRepository.findAll();
 		  List<User> UsersList = new ArrayList<>();
@@ -24,13 +25,15 @@ public class UserService {
 		return UsersList;
 	}
 	
-	 public Optional<User> get(String id)
+	 @Override
+	public Optional<User> get(String id)
 	 {
 		 Optional<User> emp = userRepository.findById(id);
 		  return emp;
 	 }
 	 
-	 public Optional<User> update(User newUser, String id)
+	 @Override
+	public Optional<User> update(User newUser, String id)
 	 {
 		 Optional<User> optionalEmp = userRepository.findById(id);
 		  if (optionalEmp.isPresent()) {
@@ -46,14 +49,16 @@ public class UserService {
 		  return optionalEmp;
 	 }
 	 
-	 public String delete(String id) 
+	 @Override
+	public String delete(String id) 
 	 {
 		 Boolean result = userRepository.existsById(id);
 		 userRepository.deleteById(id);
 		 return "{ \"success\" : "+ (result ? "true" : "false") +" }";
 	 }
 	 
-	 public User add(User newUser)
+	 @Override
+	public User add(User newUser)
 	 {
 		 String id = String.valueOf(new Random().nextInt());
 		 User emp = new User(id, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail(), 

@@ -1,4 +1,4 @@
-package com.example.linking.db.entity;
+package com.linking.db.entity;
 
 import java.util.Date;
 
@@ -7,6 +7,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,16 +16,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FeedBack 
-{
+@AllArgsConstructor
+public class User {
 	 @PrimaryKey 
-	 @Column(value = "feedback_id")
-	 private @NonNull String feedBackId;
 	 @Column(value = "user_id")
 	 private @NonNull String userId;
-	 @Column(value = "feedback_txt")
-	 private @NonNull String feedBack;
-	 @Column(value = "feedback_date")
-	 private @NonNull Date feedbackDate;		
-
+	 @Column(value = "first_name")
+	 private @NonNull String firstName;
+	 @Column(value = "last_name")
+	 private @NonNull String lastName;
+	 private @NonNull String email;
+	 private @NonNull String password;
+	 private @NonNull String gender;
+	 @Column(value = "date_of_birth")
+	 private String dateOfBirth;		 
+	 
 }

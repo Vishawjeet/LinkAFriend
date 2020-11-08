@@ -1,4 +1,4 @@
-package com.example.linking.db.entity;
+package com.linking.db.entity;
 
 import java.util.Date;
 
@@ -12,23 +12,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(value = "link_user")
+@Table(value = "user_feedback")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class FeedBack 
+{
 	 @PrimaryKey 
+	 @Column(value = "feedback_id")
+	 private @NonNull String feedBackId;
 	 @Column(value = "user_id")
 	 private @NonNull String userId;
-	 @Column(value = "first_name")
-	 private @NonNull String firstName;
-	 @Column(value = "last_name")
-	 private @NonNull String lastName;
-	 private @NonNull String email;
-	 private @NonNull String password;
-	 private @NonNull String gender;
-	 @Column(value = "date_of_birth")
-	 private @NonNull Date dateOfBirth;		 
-	 
+	 @Column(value = "feedback_txt")
+	 private @NonNull String feedBack;
+	 @Column(value = "feedback_date")
+	 private Date feedbackDate;		
+
 }
