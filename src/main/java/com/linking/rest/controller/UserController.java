@@ -1,7 +1,6 @@
 package com.linking.rest.controller;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.linking.db.entity.User;
@@ -23,30 +23,36 @@ public class UserController implements Controller<User, String> {
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/all")
-	public List<User> getAll() {
-		List<User> UsersList = userService.getAll();
-		return UsersList;
-	}
-
 	@GetMapping("/{id}")
-	public Optional<User> get(@PathVariable String id) {
-		return userService.get(id);
+	public User get(@PathVariable String id) {		
+		return userService.get(UUID.fromString(id));
+	}
+	
+	@GetMapping("/user/{userName}")
+	public User getByUserName(@PathVariable String userName) {		
+		return userService.getUserByUserName(userName);
 	}
 
 	@PutMapping("/{id}")
-	public Optional<User> update(@RequestBody User newUser, @PathVariable String id) {
-		return userService.update(newUser, id);
+	public User update(@RequestBody User newUser, @PathVariable String id) {
+		return userService.update(newUser, UUID.fromString(id));
 	}
-
+	
 	@DeleteMapping(value = "/{id}", produces = "application/json; charset=utf-8")
 	public String delete(@PathVariable String id) {
-		return userService.delete(id);
+		boolean result  =  userService.delete(UUID.fromString(id));
+		return "{ \"success\" : " + (result ? "true" : "false") + " }";		
 	}
 
 	@PostMapping("/")
 	public User add(@RequestBody User newUser) {
 		return userService.add(newUser);
+	}
+	
+	@PostMapping("/login") 
+	public String login(@RequestParam String userName, @RequestParam String password) {
+		boolean result  =  userService.login(userName, password);
+		return "{ \"success\" : " + (result ? "true" : "false") + " }";		
 	}
 
 }

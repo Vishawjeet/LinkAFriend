@@ -1,7 +1,6 @@
 package com.linking.rest.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,18 +29,19 @@ public class FeedbackController implements Controller<FeedBack, String> {
 	}
 
 	@GetMapping("/{id}")
-	public Optional<FeedBack> get(@PathVariable String id) {
+	public FeedBack get(@PathVariable String id) {
 		return feedbackService.get(id);
 	}
 
 	@PutMapping("/{id}")
-	public Optional<FeedBack> update(@RequestBody FeedBack newFeedback, @PathVariable String id) {
+	public FeedBack update(@RequestBody FeedBack newFeedback, @PathVariable String id) {
 		return feedbackService.update(newFeedback, id);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = "application/json; charset=utf-8")
 	public String delete(@PathVariable String id) {
-		return feedbackService.delete(id);
+		boolean result  =  feedbackService.delete(id);
+		return "{ \"success\" : " + (result ? "true" : "false") + " }";	
 	}
 
 	@PostMapping("/")

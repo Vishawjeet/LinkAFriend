@@ -18,7 +18,7 @@ public class FeedBackService implements BService<FeedBack, String> {
 	@Autowired
 	FeedBackRepository feedBackRepository;
 
-	@Override
+
 	public List<FeedBack> getAll() {
 		Iterable<FeedBack> result = feedBackRepository.findAll();
 		List<FeedBack> feedBackList = new ArrayList<>();
@@ -27,13 +27,13 @@ public class FeedBackService implements BService<FeedBack, String> {
 	}
 
 	@Override
-	public Optional<FeedBack> get(String id) {
+	public FeedBack get(String id) {
 		Optional<FeedBack> feedback = feedBackRepository.findById(id);
-		return feedback;
+		return feedback.get();
 	}
 
 	@Override
-	public Optional<FeedBack> update(FeedBack newFeedBack, String id) {
+	public FeedBack update(FeedBack newFeedBack, String id) {
 		Optional<FeedBack> optionalFeedback = feedBackRepository.findById(id);
 		if (optionalFeedback.isPresent()) {
 			FeedBack feedBack = optionalFeedback.get();
@@ -41,15 +41,16 @@ public class FeedBackService implements BService<FeedBack, String> {
 			feedBack.setFeedBack(newFeedBack.getFeedBack());
 			feedBack.setFeedbackDate(newFeedBack.getFeedbackDate());
 			feedBackRepository.save(feedBack);
+			return feedBack;
 		}
-		return optionalFeedback;
+		return null;
 	}
 
 	@Override
-	public String delete(String id) {
+	public boolean delete(String id) {
 		Boolean result = feedBackRepository.existsById(id);
 		feedBackRepository.deleteById(id);
-		return "{ \"success\" : " + (result ? "true" : "false") + " }";
+		return result;
 	}
 
 	@Override
